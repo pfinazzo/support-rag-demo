@@ -49,6 +49,7 @@ import {
   handleReviewQueueState,
 } from './operations-routes.js';
 import { handleReindexMutate, handleReindexRestore, handleReindexState } from './reindex-routes.js';
+import { handleStageCode } from './stage-code-routes.js';
 import type { RouteHandler } from './route-types.js';
 
 /** The path a request for any single document is filed under. */
@@ -103,6 +104,7 @@ const ROUTES = new Map<string, RouteHandler>([
   ['GET /api/prompt-cache/status', handlePromptCacheState],
   ['GET /api/rewrite/queries', handleRewriteQueries],
   ['GET /api/schema', handleSchema],
+  ['GET /api/stage-code', handleStageCode],
   ['POST /api/context/build', handleContextBuild],
   ['POST /api/judge', handleJudge],
 

@@ -5,18 +5,19 @@
  */
 /**
  * The nine pipeline stages, in the order the page shows them.
+ * `label` is the technical name. `plain` is the same stage in everyday words.
  * The page draws one stepper button per entry. The player walks through them in this order.
  */
 export const STAGES = [
-  { id: 'security', label: 'Security' },
-  { id: 'cache', label: 'Cache' },
-  { id: 'query-rewrite', label: 'Query Rewrite' },
-  { id: 'search', label: 'Search' },
-  { id: 'context', label: 'Context' },
-  { id: 'router', label: 'Model Router' },
-  { id: 'generate', label: 'Generate' },
-  { id: 'fact-check', label: 'Fact-Check' },
-  { id: 'result', label: 'Result' },
+  { id: 'security', label: 'Prompt Guard', plain: 'Security check' },
+  { id: 'cache', label: 'Semantic Cache', plain: 'Have we answered this before?' },
+  { id: 'query-rewrite', label: 'Query Rewrite', plain: 'Make the question clear' },
+  { id: 'search', label: 'Hybrid Search', plain: 'Find the right evidence' },
+  { id: 'context', label: 'Context Assembly', plain: 'Build the model call' },
+  { id: 'router', label: 'Model Router', plain: 'Choose the right model' },
+  { id: 'generate', label: 'LLM Generation', plain: 'Write the answer' },
+  { id: 'fact-check', label: 'Citation Verification', plain: 'Check the sources' },
+  { id: 'result', label: 'Grounded Result', plain: 'The final answer' },
 ] as const;
 
 /** Name of one pipeline stage, taken from STAGES. */
