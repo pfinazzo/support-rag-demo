@@ -7,8 +7,8 @@
  * The queue lives in memory. A restart empties it.
  */
 import { randomUUID } from 'node:crypto';
-import { responseEnvelope, type SupportResponse } from './structured-output.js';
-import { computeResponseConfidence, type ConfidenceInput } from './confidence-scorer.js';
+import { responseEnvelope, type SupportResponse } from '../generation/structured-output.js';
+import { computeResponseConfidence, type ConfidenceInput } from '../verification/confidence-scorer.js';
 
 /** One held answer waiting for a person. */
 export interface ReviewItem {

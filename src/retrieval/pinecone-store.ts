@@ -21,13 +21,13 @@ import type {
   ExcludedChunkReport,
   PermissionReport,
   PineconeMockRecord,
-} from './types.js';
+} from '../types.js';
 
 /** Folder of this file. ES modules have no built-in __dirname. */
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** The project folder, one level above src. */
-const root = path.resolve(__dirname, '..');
+/** The project folder, two levels above this file (src/retrieval). */
+const root = path.resolve(__dirname, '..', '..');
 
 /**
  * Reads the Pinecone settings from the environment.

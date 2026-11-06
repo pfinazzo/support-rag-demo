@@ -3,11 +3,11 @@
  * the review queue and take over conversations. These routes give the page that
  * operator view of the quality meter, the review queue and the hand-offs.
  */
-import { parseConversationTurns } from '../conversation-turns.js';
+import { parseConversationTurns } from '../query/conversation-turns.js';
 import { readJsonBody, runOrRejectWithBadRequest, sendJson } from '../http-exchange.js';
-import { humanHandoff } from '../human-handoff.js';
-import { qualityMeter } from '../quality-meter.js';
-import { reviewQueue } from '../review-queue.js';
+import { humanHandoff } from '../handoff/human-handoff.js';
+import { qualityMeter } from '../evals/quality-meter.js';
+import { reviewQueue } from '../handoff/review-queue.js';
 import type { RouteContext } from './route-types.js';
 
 /** Shows the recent quality scores and any active alerts. */

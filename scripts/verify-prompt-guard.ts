@@ -6,14 +6,14 @@
  * script nobody would notice the real model failing.
  */
 import assert from 'node:assert/strict';
-import { classifyPrompt, warmupPromptGuard, guardModelStatus } from '../src/prompt-guard-model.js';
+import { classifyPrompt, warmupPromptGuard, guardModelStatus } from '../src/guard/prompt-guard-model.js';
 import {
   PromptGuard,
   naiveMatch,
   regexMatch,
   buildDataSeparation,
   DEFAULT_GUARD_CONFIG,
-} from '../src/prompt-guard.js';
+} from '../src/guard/prompt-guard.js';
 import { ATTACK_CASES, SIMULATED_POISON_NOTE } from '../client/guard-attacks.js';
 
 /** Stops at once if the mock guard is on. A mock would make every check meaningless. */

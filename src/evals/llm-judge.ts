@@ -4,8 +4,8 @@
  * question was answered. Without it, an answer that is polite but wrong, or
  * correct but rude, would pass because nothing else looks at all four.
  */
-import { lexicalCosine } from './nli-model.js';
-import { streamLocalClaude, getLlmProvider } from './local-claude.js';
+import { lexicalCosine } from '../verification/nli-model.js';
+import { streamLocalClaude, getLlmProvider } from '../generation/local-claude.js';
 
 /** What the judge reads. */
 export interface JudgeInput {

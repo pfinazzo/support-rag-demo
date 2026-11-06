@@ -6,7 +6,7 @@
  * Without it, a follow-up that leans on the earlier chat would search for
  * words like "that" and "it", and miss the right document.
  */
-import { getLlmProvider, generateWithLocalClaude } from './local-claude.js';
+import { getLlmProvider, generateWithLocalClaude } from '../generation/local-claude.js';
 
 /**
  * Sample questions the page uses to demonstrate rewriting.

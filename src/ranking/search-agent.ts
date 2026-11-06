@@ -4,7 +4,7 @@
  * part is covered or the limit is reached. Without it, the answer would be built
  * from whatever the first search happened to find.
  */
-import type { SearchTelemetry, RerankedItem } from './types.js';
+import type { SearchTelemetry, RerankedItem } from '../types.js';
 
 /**
  * What one round of searching found, shown to the page as the search runs.

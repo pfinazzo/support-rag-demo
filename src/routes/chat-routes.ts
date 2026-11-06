@@ -7,12 +7,12 @@
 import type { ServerResponse } from 'node:http';
 
 import { toChatRequest } from '../chat-request.js';
-import { resolveRequestGuardConfig } from '../guard-config.js';
+import { resolveRequestGuardConfig } from '../guard/guard-config.js';
 import type { EmitEvent } from '../http-exchange.js';
 import { ignoreEvent, readJsonBody, sendJson, startEventStream } from '../http-exchange.js';
-import type { FullGuardReport } from '../prompt-guard.js';
-import { qualityMeter } from '../quality-meter.js';
-import { resolveCallerRoles } from '../roles.js';
+import type { FullGuardReport } from '../guard/prompt-guard.js';
+import { qualityMeter } from '../evals/quality-meter.js';
+import { resolveCallerRoles } from '../retrieval/roles.js';
 import { promptGuard, reindexer } from '../runtime.js';
 import { runSupportPipeline } from '../support-pipeline.js';
 import type { RouteContext } from './route-types.js';

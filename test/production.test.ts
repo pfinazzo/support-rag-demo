@@ -7,33 +7,33 @@ import {
   evaluateRewriteGate,
   rewriteQuery,
   TRICKY_REWRITE_QUERIES,
-} from '../src/query-rewriter.js';
-import { chunkMarkdown } from '../src/chunker.js';
-import { createSearcher } from '../src/search.js';
-import { embedText } from '../src/embeddings.js';
-import { DocumentStore } from '../src/doc-store.js';
-import { IncrementalIndexer } from '../src/reindexer.js';
-import { runSearchAgent } from '../src/search-agent.js';
-import { buildContext, assertContextFits } from '../src/context-builder.js';
-import { stablePrefix, PromptCacheLedger } from '../src/prompt-cache.js';
-import { ModelRouter } from '../src/model-router.js';
-import { FallbackChain, FallbackExhaustedError } from '../src/fallback-chain.js';
+} from '../src/query/query-rewriter.js';
+import { chunkMarkdown } from '../src/ingest/chunker.js';
+import { createSearcher } from '../src/retrieval/search.js';
+import { embedText } from '../src/retrieval/embeddings.js';
+import { DocumentStore } from '../src/ingest/doc-store.js';
+import { IncrementalIndexer } from '../src/ingest/reindexer.js';
+import { runSearchAgent } from '../src/ranking/search-agent.js';
+import { buildContext, assertContextFits } from '../src/generation/context-builder.js';
+import { stablePrefix, PromptCacheLedger } from '../src/generation/prompt-cache.js';
+import { ModelRouter } from '../src/generation/model-router.js';
+import { FallbackChain, FallbackExhaustedError } from '../src/generation/fallback-chain.js';
 import {
   responseEnvelope,
   validateStructuredOutput,
   partialAnswer,
-} from '../src/structured-output.js';
-import { generateInfrastructure } from '../src/generator.js';
-import { setLlmProvider } from '../src/local-claude.js';
-import { TOOL_DEFINITIONS, executeTool, type ToolRuntime } from '../src/tools.js';
-import { runAgentLoop, deterministicToolDecision, type AgentMessage } from '../src/agent-loop.js';
-import { computeResponseConfidence, numericFidelity } from '../src/confidence-scorer.js';
-import { ReviewQueue, seedDefaultReviewQueue } from '../src/review-queue.js';
-import { evaluateHandoffTriggers, HumanHandoff } from '../src/human-handoff.js';
-import { gradeResponseWithJudge } from '../src/llm-judge.js';
-import { GOLDEN_QUESTIONS } from '../src/golden-questions.js';
-import { evaluateGolden, runGoldenEvaluation } from '../src/golden-eval.js';
-import { QualityMeter } from '../src/quality-meter.js';
+} from '../src/generation/structured-output.js';
+import { generateInfrastructure } from '../src/generation/generator.js';
+import { setLlmProvider } from '../src/generation/local-claude.js';
+import { TOOL_DEFINITIONS, executeTool, type ToolRuntime } from '../src/generation/tools.js';
+import { runAgentLoop, deterministicToolDecision, type AgentMessage } from '../src/generation/agent-loop.js';
+import { computeResponseConfidence, numericFidelity } from '../src/verification/confidence-scorer.js';
+import { ReviewQueue, seedDefaultReviewQueue } from '../src/handoff/review-queue.js';
+import { evaluateHandoffTriggers, HumanHandoff } from '../src/handoff/human-handoff.js';
+import { gradeResponseWithJudge } from '../src/evals/llm-judge.js';
+import { GOLDEN_QUESTIONS } from '../src/evals/golden-questions.js';
+import { evaluateGolden, runGoldenEvaluation } from '../src/evals/golden-eval.js';
+import { QualityMeter } from '../src/evals/quality-meter.js';
 import type { SearchTelemetry, RerankedItem } from '../src/types.js';
 const docs = path.resolve('docs');
 const fakeChunk = (id: string, text: string, sourceFile = id + '.md'): RerankedItem => ({

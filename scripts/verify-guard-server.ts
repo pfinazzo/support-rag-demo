@@ -8,7 +8,7 @@
  */
 import assert from 'node:assert/strict';
 import { ATTACK_CASES, SIMULATED_POISON_NOTE } from '../client/guard-attacks.js';
-import { DEFAULT_GUARD_CONFIG } from '../src/prompt-guard.js';
+import { DEFAULT_GUARD_CONFIG } from '../src/guard/prompt-guard.js';
 
 /** The server to test. Defaults to the local demo port. */
 const base = process.env.BASE_URL || 'http://127.0.0.1:3198';

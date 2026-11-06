@@ -9,8 +9,8 @@
 import { randomBytes } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
 import { classifyPrompt, guardModelStatus, type ClassifierResult } from './prompt-guard-model.js';
-import { SIMULATED_POISON_NOTE } from '../client/guard-attacks.js';
-import type { ChatHistoryTurn, RerankedItem } from './types.js';
+import { SIMULATED_POISON_NOTE } from '../../client/guard-attacks.js';
+import type { ChatHistoryTurn, RerankedItem } from '../types.js';
 
 /** Which defenses are switched on, plus the classifier's blocking threshold. */
 export interface GuardConfig {

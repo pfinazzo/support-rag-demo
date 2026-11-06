@@ -10,8 +10,8 @@
  * - Otherwise: a local ONNX cross-encoder, which needs no API key.
  *   USE_LOCAL_RERANKER=true forces this one.
  */
-import { isMockAi, envNumber } from './env.js';
-import type { RerankedItem, RrfShortlistItem } from './types.js';
+import { isMockAi, envNumber } from '../env.js';
+import type { RerankedItem, RrfShortlistItem } from '../types.js';
 
 /**
  * The local cross-encoder, an ONNX model run through transformers.js.

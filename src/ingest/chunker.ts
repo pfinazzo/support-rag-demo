@@ -6,8 +6,8 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import type { ChunkDraft } from './types.js';
-import { rolesForChunk } from './roles.js';
+import type { ChunkDraft } from '../types.js';
+import { rolesForChunk } from '../retrieval/roles.js';
 
 /**
  * Cuts one Markdown file into sections, one per heading.

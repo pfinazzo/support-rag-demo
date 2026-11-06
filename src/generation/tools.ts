@@ -3,8 +3,8 @@
  * This file lists them and checks every call before it runs. Without it, a
  * model could send bad arguments, or read tickets its caller's roles forbid.
  */
-import { lookupTicket, ticketStore } from './ticket-store.js';
-import { sourceDocUrl } from './citation-checker.js';
+import { lookupTicket, ticketStore } from '../handoff/ticket-store.js';
+import { sourceDocUrl } from '../verification/citation-checker.js';
 
 /**
  * The three tools the model may call, in the JSON Schema form Anthropic's API takes.

@@ -6,29 +6,29 @@
  * only when they need its detail.
  */
 import type { ChatRequest } from './chat-request.js';
-import { checkCitations, sourceDocUrl } from './citation-checker.js';
-import { computeResponseConfidence, numericFidelity } from './confidence-scorer.js';
+import { checkCitations, sourceDocUrl } from './verification/citation-checker.js';
+import { computeResponseConfidence, numericFidelity } from './verification/confidence-scorer.js';
 import { SHOULD_STORE_HELD_ANSWERS_IN_SEMANTIC_CACHE } from './config.js';
-import { humanHandoff } from './human-handoff.js';
+import { humanHandoff } from './handoff/human-handoff.js';
 import type { EmitEvent } from './http-exchange.js';
-import { gradeResponseWithJudge } from './llm-judge.js';
-import type { GenerateResult } from './llm.js';
-import { FALLBACK_MESSAGE, generateAnswer } from './llm.js';
-import type { LlmProvider } from './local-claude.js';
-import { getLlmProvider } from './local-claude.js';
-import type { ClaudeModel } from './model-router.js';
-import { CLAUDE_MODELS, modelRouter } from './model-router.js';
-import type { FullGuardReport } from './prompt-guard.js';
-import { prepareGuardData } from './prompt-guard.js';
-import { qualityMeter } from './quality-meter.js';
-import { evaluateRewriteGate, rewriteQuery } from './query-rewriter.js';
-import { applyRetrievalOverrides } from './retrieval-overrides.js';
-import { reviewQueue } from './review-queue.js';
+import { gradeResponseWithJudge } from './evals/llm-judge.js';
+import type { GenerateResult } from './generation/llm.js';
+import { FALLBACK_MESSAGE, generateAnswer } from './generation/llm.js';
+import type { LlmProvider } from './generation/local-claude.js';
+import { getLlmProvider } from './generation/local-claude.js';
+import type { ClaudeModel } from './generation/model-router.js';
+import { CLAUDE_MODELS, modelRouter } from './generation/model-router.js';
+import type { FullGuardReport } from './guard/prompt-guard.js';
+import { prepareGuardData } from './guard/prompt-guard.js';
+import { qualityMeter } from './evals/quality-meter.js';
+import { evaluateRewriteGate, rewriteQuery } from './query/query-rewriter.js';
+import { applyRetrievalOverrides } from './retrieval/retrieval-overrides.js';
+import { reviewQueue } from './handoff/review-queue.js';
 import { reindexer, semanticCache } from './runtime.js';
-import { runSearchAgent } from './search-agent.js';
-import type { SemanticCache } from './semantic-cache.js';
-import type { SupportResponse } from './structured-output.js';
-import { responseEnvelope } from './structured-output.js';
+import { runSearchAgent } from './ranking/search-agent.js';
+import type { SemanticCache } from './query/semantic-cache.js';
+import type { SupportResponse } from './generation/structured-output.js';
+import { responseEnvelope } from './generation/structured-output.js';
 import type { ChatStepTelemetry, SearchTelemetry } from './types.js';
 
 type PipelineParams = {

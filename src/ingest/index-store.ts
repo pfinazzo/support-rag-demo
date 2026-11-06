@@ -7,8 +7,8 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { isMockAi } from './env.js';
-import type { DocChunk, IndexFile } from './types.js';
+import { isMockAi } from '../env.js';
+import type { DocChunk, IndexFile } from '../types.js';
 
 /**
  * Gives the index file path for real or mock mode.

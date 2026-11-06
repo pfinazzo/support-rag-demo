@@ -4,7 +4,7 @@
  * Sonnet or Opus. Without it, every question would go to one model. Easy ones would
  * cost too much, or hard ones would get a weak answer.
  */
-import { lexicalCosine } from './nli-model.js';
+import { lexicalCosine } from '../verification/nli-model.js';
 import { countTokens } from './context-builder.js';
 
 /**

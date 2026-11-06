@@ -2,15 +2,15 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
 import { toChatRequest } from '../src/chat-request.js';
-import { buildChunkingTelemetry } from '../src/chunking-telemetry.js';
-import { parseConversationTurns } from '../src/conversation-turns.js';
+import { buildChunkingTelemetry } from '../src/ingest/chunking-telemetry.js';
+import { parseConversationTurns } from '../src/query/conversation-turns.js';
 import {
   buildErrorResponse,
   createHttpError,
   isHttpError,
   runOrRejectWithBadRequest,
 } from '../src/http-exchange.js';
-import { applyRetrievalOverrides } from '../src/retrieval-overrides.js';
+import { applyRetrievalOverrides } from '../src/retrieval/retrieval-overrides.js';
 import type { SearchTelemetry } from '../src/types.js';
 
 /**

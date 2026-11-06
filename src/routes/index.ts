@@ -4,7 +4,7 @@
  * adding a row. Keeping the list in one place also shows at a glance what the
  * server exposes.
  */
-import { handleHotReloadSubscription } from '../hot-reload.js';
+import { handleHotReloadSubscription } from '../ingest/hot-reload.js';
 import {
   handleSemanticCacheClear,
   handleSemanticCacheState,

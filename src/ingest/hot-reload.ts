@@ -13,8 +13,8 @@ import {
   IS_HOT_RELOAD_ENABLED,
   PROJECT_ROOT,
   PUBLIC_DIRECTORY,
-} from './config.js';
-import { startEventStream } from './http-exchange.js';
+} from '../config.js';
+import { startEventStream } from '../http-exchange.js';
 
 /**
  * Waits this long after the last edit before rebuilding.
