@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Support RAG Pipeline</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="pipeline-shell">
+      <header class="input-bar">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          <h1>Support RAG Pipeline</h1>
+        </div>
+        <form id="run-form">
+          <label class="sr-only" for="role">Access permissions</label
+          ><select id="role">
+            <option value="admin">All roles</option>
+            <option value="billing">Billing</option>
+            <option value="engineering">Engineering</option>
+            <option value="all">Public</option></select
+          ><label class="sr-only" for="question">Support question</label
+          ><input
+            id="question"
+            autocomplete="off"
+            placeholder="Ask a support question…"
+            required
+          /><button id="btn-run" class="run-button">Run <span>→</span></button>
+        </form>
+        <div class="tools-anchor">
+          <button type="button" id="tools-toggle" aria-expanded="false" aria-controls="tools-menu">
+            ⋯ <span>Tools</span>
+          </button>
+          <div id="tools-menu" hidden>
+            <button data-tool="eval">Eval Suite</button
+            ><button data-tool="review">Review Queue</button
+            ><button data-tool="quality">Quality Meter</button
+            ><button data-tool="index">Re-Indexer</button>
+          </div>
+        </div>
+      </header>
+      <section id="idle-state" class="idle-state">
+        <p class="eyebrow">ONE REQUEST. ONE STEP AT A TIME.</p>
+        <h2>Follow the answer<br />from question to source.</h2>
+        <p class="idle-copy">See only what matters at each step.</p>
+        <div class="examples">
+          <button data-example="Getting ERR_PAYMENT_402 on renewal">
+            A payment failed <span>↗</span></button
+          ><button data-example="idp cert exp">An SSO certificate expired <span>↗</span></button
+          ><button data-example="How do I request a refund within 14 days?">
+            Request a refund <span>↗</span>
+          </button>
+        </div>
+      </section>
+      <section id="playback-bar" class="playback-bar" hidden>
+        <nav id="pipeline-stepper" aria-label="Request progress"></nav>
+        <div class="playback-controls">
+          <button id="play-pause" aria-label="Pause playback">⏸ Pause</button
+          ><button id="prev-step" aria-label="Previous step">← Prev</button
+          ><button id="next-step" aria-label="Next step">Next →</button
+          ><button id="replay" aria-label="Replay recorded request">Replay ↻</button>
+        </div>
+      </section>
+      <div id="spotlightContainer" class="spotlight-container" aria-live="polite" hidden></div>
+    </main>
+    <dialog id="tools-dialog" aria-labelledby="tools-title">
+      <div class="dialog-heading">
+        <h2 id="tools-title">Tools</h2>
+        <button id="tools-close" aria-label="Close tools">×</button>
+      </div>
+      <div id="tools-body"></div>
+    </dialog>
+    <script type="module" src="/spotlight.js"></script>
+  </body>
+</html>

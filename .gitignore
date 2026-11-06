@@ -1,0 +1,26 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# dependencies and downloaded models
+node_modules/
+.cache/
+
+# generated data (rebuilt by npm run index:mock)
+data/index.json
+data/index.mock.json
+data/pinecone.mock.json
+
+# compiled client (rebuilt by npm run build:client from client/*.ts)
+public/*.js
+
+# runtime files
+*.log
+.server.pid
+
+# editor and OS
+.DS_Store
+.vscode/
+.idea/
+*.tsbuildinfo

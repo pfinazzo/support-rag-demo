@@ -1,0 +1,56 @@
+{
+  "name": "support-rag-demo",
+  "version": "2.0.0",
+  "description": "Production support retrieval, response governance and operations console",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.client.json --noEmit",
+    "build:client": "tsc -p tsconfig.client.json && node scripts/cachebust-client.mjs",
+    "build": "npm run build:client",
+    "index": "tsx scripts/build-index.ts",
+    "index:mock": "MOCK_AI=true tsx scripts/build-index.ts --mock",
+    "demo:index": "npm run index:mock",
+    "start": "tsx src/server.ts",
+    "demo": "MOCK_AI=true FORCE_MOCK_LLM=true tsx scripts/build-index.ts --mock && MOCK_AI=true FORCE_MOCK_LLM=true tsx src/server.ts",
+    "test": "MOCK_AI=true FORCE_MOCK_LLM=true FORCE_MOCK_GUARD=true FORCE_MOCK_NLI=true ALLOW_LEGACY_TEST_FIXTURES=true HOT_RELOAD=0 tsx --test test/*.test.ts",
+    "dev": "npm run build:client && tsx watch src/server.ts",
+    "eval": "tsx scripts/run-golden-eval.ts",
+    "verify:citations": "tsx scripts/verify-citations.ts"
+  },
+  "keywords": [
+    "rag",
+    "bm25",
+    "rrf",
+    "reranker",
+    "typescript",
+    "threejs",
+    "claude"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@huggingface/transformers": "^3.0.0",
+    "@pinecone-database/pinecone": "^8.2.0",
+    "sql.js": "^1.15.2"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.0.0",
+    "@types/sql.js": "^1.4.11",
+    "@types/three": "^0.169.0",
+    "jsdom": "^26.1.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.6.0"
+  },
+  "allowScripts": {
+    "onnxruntime-node@1.21.0": true,
+    "esbuild@0.28.2": true,
+    "sharp@0.34.5": true,
+    "protobufjs@7.6.6": true
+  },
+  "overrides": {
+    "sharp": "^0.35.5"
+  }
+}
