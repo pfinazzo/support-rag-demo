@@ -3,7 +3,7 @@
  * a log of recent checks. These routes expose both, so the page can switch a
  * defense on or off and show what each one caught.
  */
-import { resolveRequestGuardConfig } from '../guard-config.js';
+import { resolveRequestGuardConfig } from '../guard/guard-config.js';
 import { readJsonBody, runOrRejectWithBadRequest, sendJson } from '../http-exchange.js';
 import { promptGuard } from '../runtime.js';
 import type { RouteContext } from './route-types.js';

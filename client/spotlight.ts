@@ -89,21 +89,67 @@ let pauseAt = new URLSearchParams(location.search).get('pauseAt');
 
 /** The heading and the one-line subheading for each stage card. */
 const titles: Record<StageId, [string, string]> = {
-  security: ['Security check', 'Four gates. One protected request.'],
-  cache: ['Have we answered this before?', 'Check for a saved answer before doing more work.'],
-  'query-rewrite': ['Make the question clear.', 'Use a rewrite only when the question needs it.'],
+  security: [
+    'Prompt Guard: four-layer input screening',
+    'Security check. Four gates, one protected request.',
+  ],
+  cache: [
+    'Semantic Cache: HNSW nearest-neighbour lookup',
+    'Have we answered this before? Check for a saved answer before doing more work.',
+  ],
+  'query-rewrite': [
+    'Query Rewrite: heuristic-gated contextualisation',
+    'Make the question clear. Rewrite only when the question needs it.',
+  ],
   search: [
-    'Find the right evidence.',
-    'Search by exact words and by meaning, then re-check the best matches.',
+    'Hybrid Search: BM25 + vector, Reciprocal Rank Fusion, cross-encoder re-rank',
+    'Find the right evidence. Search by exact words and by meaning, then re-check the best matches.',
   ],
   context: [
-    'Assemble the model call.',
-    'Only the instructions, tools, evidence and history this request needs.',
+    'Context Assembly: prompt build and token budget',
+    'Build the model call from only the instructions, tools, evidence and history this request needs.',
   ],
-  router: ['Choose the right model.', 'Use a smaller model when it is enough. Keep backups ready.'],
-  generate: ['Write the answer.', 'Live output · provisional until the source checks finish.'],
-  'fact-check': ['Check the sources.', 'Working links, supported claims and matching quotations.'],
-  result: ['A grounded answer.', 'The final response and the evidence behind it.'],
+  router: [
+    'Model Router: complexity-scored selection with fallback chain',
+    'Choose the right model. Use a smaller one when it is enough, with backups ready.',
+  ],
+  generate: [
+    'LLM Generation: streamed completion (SSE)',
+    'Write the answer. Live output, provisional until the source checks finish.',
+  ],
+  'fact-check': [
+    'Citation Verification: HTTP fetch, DeBERTa NLI, verbatim quote',
+    'Check the sources. Working links, supported claims and matching quotations.',
+  ],
+  result: [
+    'Grounded Result: answer with verified citations',
+    'The final response and the evidence behind it.',
+  ],
+};
+
+/**
+ * The exact technology and settings behind each stage, shown under the plain-English subheading.
+ * Every value here matches src/config.ts and the stage's source file, so the page and the code agree.
+ */
+const howItIsDone: Record<StageId, string> = {
+  security:
+    'Llama Prompt Guard 2 (22M, ONNX) classifies the question through transformers.js and blocks at a score of 0.5 or higher. A phrase list, regex patterns and a data-separation check run before it.',
+  cache:
+    'The question is embedded with OpenAI text-embedding-3-small. An HNSW index finds the nearest saved question. A match needs cosine similarity of at least 0.85, in the same role, from 128 saved entries.',
+  'query-rewrite':
+    'Rules flag short questions, unresolved references, follow-ups and abbreviations. Only a flagged question goes to Claude Haiku 4.5 for a rewrite. Other questions skip the model call.',
+  search:
+    'Role-filtered BM25 (k1 1.5, b 0.75) and Pinecone cosine vector search run side by side. Reciprocal Rank Fusion (k = 30) keeps 8 candidates. A cross-encoder (ms-marco-MiniLM-L-6-v2, or Cohere rerank-v3.5) keeps the top 3.',
+  context:
+    'The prompt holds only the system rules, tool definitions, retrieved sections and recent turns. Tokens are estimated as UTF-8 bytes / 3 plus 128. Older turns are compacted to fit the 200k-token window.',
+  router:
+    'A complexity score picks Claude Haiku 4.5, Sonnet 4.5 or Opus 4.6. A fallback chain tries the next model if a call fails. Anthropic prompt caching reuses the unchanged prompt prefix.',
+  generate:
+    'The Anthropic Messages API streams tokens to the browser over Server-Sent Events. The model may call tools in a loop of up to 5 iterations before it writes the answer.',
+  'fact-check':
+    'The server fetches each cited URL. A DeBERTa-v3-xsmall natural-language-inference model must score each claim as entailed at 0.55 or higher. The quoted text must also appear word for word in the page.',
+  result:
+    'A confidence score combines the checks. At 0.72 or higher the answer is released. Below that, it goes to the review queue and the customer is offered a human handoff.',
 };
 
 /** Builds one labelled box of a flow row. The label and value are already HTML. */
@@ -168,6 +214,26 @@ function rewrite(d: D) {
 }
 
 /**
+ * Draws the reciprocal rank fusion math for the top three fused sections.
+ * Each section scores 1 / (k + rank) in each list it appears in, and the two terms are added.
+ * A section missing from a list adds 0 for that list. Returns an empty string with no candidates.
+ */
+function rrfMath(r: D): string {
+  const k = Number(r.rrfK ?? 30);
+  const term = (rank: number | null | undefined) =>
+    rank ? `1/(${k}+${rank}) = ${(1 / (k + rank)).toFixed(4)}` : '0 (not in list)';
+  const rows = ((r.rrfShortlist || []) as D[])
+    .slice(0, 3)
+    .map(
+      (c) =>
+        `<tr><td>${esc(c.headingPath || '')}</td><td>${term(c.bm25Rank)}</td><td>${term(c.vectorRank)}</td><td><b>${(Number(c.rrfScore) || 0).toFixed(4)}</b></td></tr>`,
+    )
+    .join('');
+  if (!rows) return '';
+  return `<details class="math-toggle" open><summary>Reciprocal rank math (k = ${k})</summary><div class="math-toggle-body"><p>Reciprocal Rank Fusion adds one reciprocal term per list: <span class="formula-spot">RRF(d) = 1/(k + rank<sub>BM25</sub>(d)) + 1/(k + rank<sub>vector</sub>(d))</span></p><p>In plain terms: a section ranked high in either search earns a bigger term. A section ranked high in both earns two big terms, so it rises to the top. The constant k = ${k} keeps rank 1 from dwarfing rank 2.</p><table><thead><tr><th>Section</th><th>BM25 term</th><th>Vector term</th><th>RRF score</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
+}
+
+/**
  * Draws the search stage: BM25 and vector search, merged by reciprocal rank fusion.
  * Shows how many matches each found, then the top three sections, each opening to its text.
  * If search ran more than once, adds the number of passes and why the last one ended.
@@ -176,7 +242,7 @@ function search(d: D) {
   const r = d.reranking || d.fusing || {},
     results = (r.results || []) as D[],
     passes = player.state.stages.search.events.filter((e) => e.event === 'search_pass');
-  return `<div class="retrieval-top"><div>Exact Word Search <small>BM25 · ${r.bm25List?.length ?? '—'} matches</small></div><span>+</span><div>Meaning Search <small>Vector embeddings · ${r.vectorList?.length ?? '—'} matches</small></div></div><div class="down-arrow">↓</div><div class="ranking-node">Combined Ranking <small>${r.rrfShortlist?.length ?? '—'} candidates</small></div><div class="down-arrow">↓</div><div class="snippet-list">${
+  return `<div class="retrieval-top"><div>Exact Word Search <small>BM25 · ${r.bm25List?.length ?? '—'} matches</small></div><span>+</span><div>Meaning Search <small>Vector embeddings · ${r.vectorList?.length ?? '—'} matches</small></div></div><div class="down-arrow">↓</div><div class="ranking-node">Reciprocal Rank Fusion (RRF) <small>Combined ranking · ${r.rrfShortlist?.length ?? '—'} candidates</small></div>${rrfMath(r)}<div class="down-arrow">↓</div><div class="snippet-list">${
     results
       .slice(0, 3)
       .map(
@@ -321,6 +387,40 @@ function result(d: D) {
   }</div><div class="final-confidence"><span>Confidence Score</span><strong>${percent(confidence)}</strong></div></div><p class="inspection-hint">Click any step above or ← Prev to inspect each stage.</p>`;
 }
 
+/** One source snippet, as the server sends it. */
+type StageSnippet = { title: string; file: string; startLine: number; code: string };
+
+/** Source snippets by stage id. Empty until the first fetch finishes. */
+let stageCode: Record<string, StageSnippet[]> = {};
+
+/** Fetches the snippets once, then redraws so they appear. A failed fetch leaves the page without snippets. */
+const loadStageCode = async (): Promise<void> => {
+  try {
+    const res = await fetch('/api/stage-code');
+    if (!res.ok) return;
+    stageCode = ((await res.json()) as { stages?: typeof stageCode }).stages ?? {};
+    renderSpotlight();
+  } catch {
+    stageCode = {};
+  }
+};
+void loadStageCode();
+
+/**
+ * Draws the real source code that did this stage's work, one fold-out per snippet.
+ * Returns an empty string until the snippets arrive or if the stage has none.
+ */
+function codeBlock(stage: StageId): string {
+  const snippets = stageCode[stage] || [];
+  if (!snippets.length) return '';
+  return `<div class="code-evidence"><h4>The code that did this</h4>${snippets
+    .map(
+      (sn) =>
+        `<details class="code-snippet"><summary><span>${esc(sn.title)}</span><code>${esc(sn.file)}:${sn.startLine}</code></summary><pre><code>${esc(sn.code)}</code></pre></details>`,
+    )
+    .join('')}</div>`;
+}
+
 /** Which function draws the card for each stage. */
 const renderers: Record<StageId, (d: D) => string> = {
   security,
@@ -358,12 +458,12 @@ export function renderSpotlight() {
       visited = state.visited.includes(s.id),
       stopped = r.status === 'stopped',
       skip = r.status === 'skipped';
-    return `<button class="step-pill ${current ? 'current' : ''} ${visited ? 'visited' : ''} ${skip ? 'skipped' : ''} ${stopped ? 'stopped' : ''}" data-step="${s.id}" ${(!r.ready && !r.events.length) || skip || stopped ? 'disabled' : ''} aria-current="${current ? 'step' : 'false'}" title="${skip ? (state.cacheHit ? 'Skipped (Cache Hit)' : 'Not required') : stopped ? 'Stopped' : s.label}"><span>${visited && !current ? '✓' : i + 1}</span><b>${s.label}</b>${skip ? (state.cacheHit ? '<small>Cache hit</small>' : '<small>Skipped</small>') : stopped ? '<small>Stopped</small>' : ''}</button>`;
+    return `<button class="step-pill ${current ? 'current' : ''} ${visited ? 'visited' : ''} ${skip ? 'skipped' : ''} ${stopped ? 'stopped' : ''}" data-step="${s.id}" ${(!r.ready && !r.events.length) || skip || stopped ? 'disabled' : ''} aria-current="${current ? 'step' : 'false'}" title="${skip ? (state.cacheHit ? 'Skipped (Semantic Cache hit)' : 'Not required') : stopped ? 'Stopped' : `${s.label}: ${s.plain}`}"><span>${visited && !current ? '✓' : i + 1}</span><b>${s.label}</b>${skip ? (state.cacheHit ? '<small>Cache hit</small>' : '<small>Skipped</small>') : stopped ? '<small>Stopped</small>' : ''}</button>`;
   }).join('');
   const active = state.active,
     data = state.stages[active].data;
   const body = renderers[active](data);
-  const markup = `<section class="spotlight-card ${state.playing ? 'autoplay' : ''}" data-step-view="${active}" aria-label="${esc(STAGES.find((s) => s.id === active)!.label)}"><div class="stage-progress"><span id="stage-progress-fill"></span></div><div class="spotlight-heading"><p class="eyebrow">STEP ${STAGES.findIndex((s) => s.id === active) + 1} OF 9${state.blocked ? ' · STOPPED' : active === 'result' && state.finished ? ' · COMPLETE' : state.playing ? ' · LIVE PLAYBACK' : ' · PAUSED'}</p><h2>${titles[active][0]}</h2><p>${titles[active][1]}</p></div><div class="step-content">${body}</div>${state.error ? `<div class="notice bad">${esc(state.error)}</div>` : ''}</section>`;
+  const markup = `<section class="spotlight-card ${state.playing ? 'autoplay' : ''}" data-step-view="${active}" aria-label="${esc(STAGES.find((s) => s.id === active)!.label)}"><div class="stage-progress"><span id="stage-progress-fill"></span></div><div class="spotlight-heading"><p class="eyebrow">STEP ${STAGES.findIndex((s) => s.id === active) + 1} OF 9${state.blocked ? ' · STOPPED' : active === 'result' && state.finished ? ' · COMPLETE' : state.playing ? ' · LIVE PLAYBACK' : ' · PAUSED'}</p><h2>${titles[active][0]}</h2><p>${titles[active][1]}</p><p class="stage-how"><b>How it is done:</b> ${howItIsDone[active]}</p></div><div class="step-content">${body}${codeBlock(active)}</div>${state.error ? `<div class="notice bad">${esc(state.error)}</div>` : ''}</section>`;
   if (markup !== lastMarkup) {
     const openDetails = new Set(
       [...el('spotlightContainer').querySelectorAll('details')].flatMap((d, i) =>

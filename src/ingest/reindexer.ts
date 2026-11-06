@@ -8,9 +8,9 @@
  */
 import { createHash } from 'node:crypto';
 import { chunkMarkdown } from './chunker.js';
-import { embedText } from './embeddings.js';
-import { createSearcher } from './search.js';
-import type { DocChunk } from './types.js';
+import { embedText } from '../retrieval/embeddings.js';
+import { createSearcher } from '../retrieval/search.js';
+import type { DocChunk } from '../types.js';
 import type { DocumentStore } from './doc-store.js';
 
 /** Returns the SHA-256 hash of a text, as hex. Equal text always gives an equal hash. */

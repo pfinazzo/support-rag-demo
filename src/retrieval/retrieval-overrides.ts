@@ -3,8 +3,8 @@
  * answer is written. They sit apart from the search itself so each one can be
  * read, and tested, on its own.
  */
-import { poisonRetrievedChunks } from './prompt-guard.js';
-import type { SearchTelemetry } from './types.js';
+import { poisonRetrievedChunks } from '../guard/prompt-guard.js';
+import type { SearchTelemetry } from '../types.js';
 
 const BILLING_ERROR_PATTERN = /ERR_PAYMENT_402|\b402\b/i;
 

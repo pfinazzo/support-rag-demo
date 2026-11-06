@@ -3,11 +3,11 @@
  * request, once, at the edge. Everything after it can trust the shape and
  * never re-checks, and a bad field is a 400 that names the field.
  */
-import { parseConversationTurns } from './conversation-turns.js';
+import { parseConversationTurns } from './query/conversation-turns.js';
 import type { JsonObject } from './http-exchange.js';
 import { createHttpError, isJsonObject, runOrRejectWithBadRequest } from './http-exchange.js';
-import { resolveCallerRoles } from './roles.js';
-import { validateThreshold } from './semantic-cache.js';
+import { resolveCallerRoles } from './retrieval/roles.js';
+import { validateThreshold } from './query/semantic-cache.js';
 import type { ChatHistoryTurn } from './types.js';
 
 /**

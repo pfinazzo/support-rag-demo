@@ -20,10 +20,10 @@ import {
   resolveRequestId,
   sendJson,
 } from './http-exchange.js';
-import { getLlmProvider } from './local-claude.js';
-import { nliModelStatus, warmupNli } from './nli-model.js';
-import { warmupPromptGuard } from './prompt-guard-model.js';
-import { resolveRerankerBackend, warmupReranker } from './reranker.js';
+import { getLlmProvider } from './generation/local-claude.js';
+import { nliModelStatus, warmupNli } from './verification/nli-model.js';
+import { warmupPromptGuard } from './guard/prompt-guard-model.js';
+import { resolveRerankerBackend, warmupReranker } from './ranking/reranker.js';
 import { findRouteHandler } from './routes/index.js';
 import type { RouteHandler } from './routes/route-types.js';
 import { promptGuard, reindexer } from './runtime.js';

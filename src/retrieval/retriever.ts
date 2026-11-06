@@ -4,4 +4,4 @@
  */
 export { createSearcher, RRF_K } from './search.js';
 
-export { runSearchAgent } from './search-agent.js';
+export { runSearchAgent } from '../ranking/search-agent.js';

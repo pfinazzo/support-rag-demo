@@ -7,7 +7,7 @@
  * would have to ask them to repeat everything.
  */
 import { randomUUID } from 'node:crypto';
-import { lexicalCosine } from './nli-model.js';
+import { lexicalCosine } from '../verification/nli-model.js';
 import { ticketStore } from './ticket-store.js';
 
 /** One message in the conversation. */

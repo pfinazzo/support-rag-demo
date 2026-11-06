@@ -5,8 +5,8 @@
  * nothing itself, so it can be tested without starting a server.
  */
 import { chunkMarkdown } from './chunker.js';
-import { ROLE_PRESETS } from './roles.js';
-import type { DocChunk } from './types.js';
+import { ROLE_PRESETS } from '../retrieval/roles.js';
+import type { DocChunk } from '../types.js';
 
 type SourceDocument = { readonly id: string; readonly content: string };
 

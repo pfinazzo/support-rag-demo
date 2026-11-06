@@ -13,8 +13,8 @@ import {
   DEFAULT_SHORTLIST_TOP_K,
   DEFAULT_MIN_RERANK_SCORE,
   type RerankerBackend,
-} from './reranker.js';
-import { envNumber } from './env.js';
+} from '../ranking/reranker.js';
+import { envNumber } from '../env.js';
 import {
   buildPermissionReport,
   ensureChunkRoles,
@@ -30,7 +30,7 @@ import type {
   VectorRankedItem,
   RrfShortlistItem,
   SearchTelemetry,
-} from './types.js';
+} from '../types.js';
 
 /**
  * The constant k in the reciprocal rank fusion score 1 / (rank + k).

@@ -5,9 +5,9 @@
  * so a regression shows up as a failed row instead of a customer complaint.
  */
 import { toChatRequest } from '../chat-request.js';
-import { runGoldenEvaluation } from '../golden-eval.js';
-import type { GoldenQuestion } from '../golden-questions.js';
-import { GOLDEN_QUESTIONS } from '../golden-questions.js';
+import { runGoldenEvaluation } from '../evals/golden-eval.js';
+import type { GoldenQuestion } from '../evals/golden-questions.js';
+import { GOLDEN_QUESTIONS } from '../evals/golden-questions.js';
 import type { EmitEvent } from '../http-exchange.js';
 import { ignoreEvent, readJsonBody, sendJson, startEventStream } from '../http-exchange.js';
 import { promptGuard } from '../runtime.js';

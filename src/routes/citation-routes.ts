@@ -4,8 +4,8 @@
  * fail in a different way (a good citation, a dead link, a reversed claim, a
  * made-up quote). These routes run that check and stream its steps.
  */
-import type { CitationSource } from '../citation-checker.js';
-import { checkCitations, citationSimulation } from '../citation-checker.js';
+import type { CitationSource } from '../verification/citation-checker.js';
+import { checkCitations, citationSimulation } from '../verification/citation-checker.js';
 import type { EmitEvent, JsonObject } from '../http-exchange.js';
 import {
   ignoreEvent,
@@ -14,7 +14,7 @@ import {
   sendJson,
   startEventStream,
 } from '../http-exchange.js';
-import { nliModelStatus } from '../nli-model.js';
+import { nliModelStatus } from '../verification/nli-model.js';
 import type { RouteContext } from './route-types.js';
 
 /** The built-in examples, one per way a citation can go wrong. */

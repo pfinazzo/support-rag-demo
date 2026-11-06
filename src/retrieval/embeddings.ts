@@ -8,7 +8,7 @@
  * different distance rule, and their scores would not match.
  */
 import crypto from 'node:crypto';
-import { isMockAi } from './env.js';
+import { isMockAi } from '../env.js';
 
 /** The OpenAI model that makes the vectors in production. */
 export const EMBEDDING_MODEL = 'text-embedding-3-small';

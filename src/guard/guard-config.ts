@@ -3,10 +3,10 @@
  * one check. The saved settings must not change when it does. This builds the
  * settings for that one request and leaves the saved ones alone.
  */
-import { runOrRejectWithBadRequest } from './http-exchange.js';
+import { runOrRejectWithBadRequest } from '../http-exchange.js';
 import type { GuardConfig } from './prompt-guard.js';
 import { PromptGuard } from './prompt-guard.js';
-import { promptGuard } from './runtime.js';
+import { promptGuard } from '../runtime.js';
 
 /**
  * Starts from the saved settings and applies what the request asked for.

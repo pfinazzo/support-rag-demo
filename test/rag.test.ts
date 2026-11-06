@@ -12,31 +12,31 @@ import {
   checkQuotes,
   normalizeQuote,
   citationSimulation,
-} from '../src/citation-checker.js';
-import { inferNli, lexicalCosine } from '../src/nli-model.js';
+} from '../src/verification/citation-checker.js';
+import { inferNli, lexicalCosine } from '../src/verification/nli-model.js';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn, type ChildProcess } from 'node:child_process';
 
-import { chunkMarkdown, loadAndChunkDocs } from '../src/chunker.js';
-import { buildBm25Index, tokenize } from '../src/bm25.js';
-import { cosineSimilarity, mockEmbed, embedText } from '../src/embeddings.js';
-import { createSearcher, RRF_K } from '../src/search.js';
-import { mockCrossEncoderScore, rerankShortlist } from '../src/reranker.js';
-import { FALLBACK_MESSAGE } from '../src/llm.js';
-import { indexPathForMode } from '../src/index-store.js';
-import { _resetClaudeDiscoveryCache, setLlmProvider, getLlmProvider } from '../src/local-claude.js';
+import { chunkMarkdown, loadAndChunkDocs } from '../src/ingest/chunker.js';
+import { buildBm25Index, tokenize } from '../src/retrieval/bm25.js';
+import { cosineSimilarity, mockEmbed, embedText } from '../src/retrieval/embeddings.js';
+import { createSearcher, RRF_K } from '../src/retrieval/search.js';
+import { mockCrossEncoderScore, rerankShortlist } from '../src/ranking/reranker.js';
+import { FALLBACK_MESSAGE } from '../src/generation/llm.js';
+import { indexPathForMode } from '../src/ingest/index-store.js';
+import { _resetClaudeDiscoveryCache, setLlmProvider, getLlmProvider } from '../src/generation/local-claude.js';
 import type { DocChunk, RrfShortlistItem } from '../src/types.js';
-import { rolesForChunk, chunkAccessibleToRoles, ROLE_PRESETS } from '../src/roles.js';
+import { rolesForChunk, chunkAccessibleToRoles, ROLE_PRESETS } from '../src/retrieval/roles.js';
 import {
   buildPermissionReport,
   loadPineconeMock,
   ensureChunkRoles,
-} from '../src/pinecone-store.js';
-import { loadIndex } from '../src/index-store.js';
-import { HnswAnnIndex } from '../src/hnsw-index.js';
-import { SemanticCache } from '../src/semantic-cache.js';
+} from '../src/retrieval/pinecone-store.js';
+import { loadIndex } from '../src/ingest/index-store.js';
+import { HnswAnnIndex } from '../src/retrieval/hnsw-index.js';
+import { SemanticCache } from '../src/query/semantic-cache.js';
 import { ATTACK_CASES, SIMULATED_POISON_NOTE } from '../client/guard-attacks.js';
 import {
   PromptGuard,
@@ -46,7 +46,7 @@ import {
   buildDataSeparation,
   prepareGuardData,
   POISON_NOTE,
-} from '../src/prompt-guard.js';
+} from '../src/guard/prompt-guard.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');

@@ -8,7 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { DATABASE_SEED_DIRECTORY } from '../config.js';
-import { DATABASE_DOCS } from '../doc-store.js';
+import { DATABASE_DOCS } from '../ingest/doc-store.js';
 import { createHttpError, readJsonBody, sendJson } from '../http-exchange.js';
 import { documentStore, reindexer, semanticCache } from '../runtime.js';
 import type { RouteContext } from './route-types.js';

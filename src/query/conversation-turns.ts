@@ -4,8 +4,8 @@
  * a malformed list is rejected the same way everywhere and later code can
  * trust every turn has a text role and text content.
  */
-import { createHttpError, isJsonObject } from './http-exchange.js';
-import type { ChatHistoryTurn } from './types.js';
+import { createHttpError, isJsonObject } from '../http-exchange.js';
+import type { ChatHistoryTurn } from '../types.js';
 
 /** True for a turn with a text role and text content. Extra fields are allowed. */
 const isConversationTurn = (value: unknown): value is ChatHistoryTurn =>

@@ -8,11 +8,11 @@
  * The semantic cache lives in memory. A restart empties it. When it is full, the
  * oldest answer is dropped first.
  */
-import type { CitationReport } from './citation-checker.js';
+import type { CitationReport } from '../verification/citation-checker.js';
 import { performance } from 'node:perf_hooks';
-import { HnswAnnIndex } from './hnsw-index.js';
-import { embedText, cosineSimilarity } from './embeddings.js';
-import type { ChatStepTelemetry, SearchTelemetry } from './types.js';
+import { HnswAnnIndex } from '../retrieval/hnsw-index.js';
+import { embedText, cosineSimilarity } from '../retrieval/embeddings.js';
+import type { ChatStepTelemetry, SearchTelemetry } from '../types.js';
 
 /** Everything saved for one answer, so a later hit can show the same stages again. */
 export interface CachedResponse {

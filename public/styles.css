@@ -1242,3 +1242,107 @@ dialog p {
   margin: 0;
   max-width: calc(100vw - 24px);
 }
+
+/* Reciprocal rank math block on the Hybrid Search stage. */
+.math-toggle {
+  margin: 14px auto 0;
+  max-width: 640px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 12px;
+  color: var(--ink);
+}
+.math-toggle summary {
+  cursor: pointer;
+  padding: 9px 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.math-toggle-body {
+  padding: 0 14px 12px;
+  line-height: 1.6;
+}
+.math-toggle-body p {
+  margin: 6px 0;
+}
+.math-toggle .formula-spot {
+  display: block;
+  margin: 6px 0;
+  padding: 8px 10px;
+  background: var(--bg);
+  border-radius: 6px;
+  font-family: ui-monospace, Menlo, monospace;
+}
+.math-toggle table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.math-toggle th,
+.math-toggle td {
+  text-align: left;
+  padding: 5px 6px;
+  border-top: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.math-toggle th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Technical "how it is done" line under each stage's plain-English subheading. */
+.stage-how {
+  max-width: 720px;
+  margin: 8px auto 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.stage-how b {
+  color: var(--ink);
+}
+
+/* Real source code shown under each stage. */
+.code-evidence {
+  margin: 22px auto 0;
+  max-width: 720px;
+}
+.code-evidence h4 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.code-snippet {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 8px;
+}
+.code-snippet summary {
+  cursor: pointer;
+  padding: 9px 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.code-snippet summary code {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 11px;
+}
+.code-snippet pre {
+  margin: 0;
+  padding: 12px 14px;
+  overflow-x: auto;
+  background: #0f1d20;
+  color: #d7e6e1;
+  border-radius: 0 0 10px 10px;
+  font-size: 11.5px;
+  line-height: 1.55;
+}

@@ -6,14 +6,14 @@
  */
 import { HAS_ANTHROPIC_KEY } from '../config.js';
 import { createHttpError, readJsonBody, sendJson } from '../http-exchange.js';
-import type { LlmProvider } from '../local-claude.js';
+import type { LlmProvider } from '../generation/local-claude.js';
 import {
   checkClaudeAuth,
   disconnectLocalClaude,
   getLlmProvider,
   setLlmProvider,
   startClaudeLogin,
-} from '../local-claude.js';
+} from '../generation/local-claude.js';
 import type { RouteContext } from './route-types.js';
 
 const LLM_PROVIDERS: readonly LlmProvider[] = ['local-claude', 'anthropic-api', 'openai', 'mock'];

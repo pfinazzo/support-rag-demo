@@ -4,7 +4,7 @@
  * must be, and start over.
  */
 import { readJsonBody, runOrRejectWithBadRequest, sendJson } from '../http-exchange.js';
-import { resolveCallerRoles } from '../roles.js';
+import { resolveCallerRoles } from '../retrieval/roles.js';
 import { semanticCache } from '../runtime.js';
 import type { RouteContext } from './route-types.js';
 

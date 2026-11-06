@@ -4,15 +4,15 @@
  * graded. These routes expose each of those, with their own test inputs, so
  * the page can demonstrate them without a full question.
  */
-import { buildContext } from '../context-builder.js';
-import { parseConversationTurns } from '../conversation-turns.js';
-import { fallbackChain } from '../fallback-chain.js';
+import { buildContext } from '../generation/context-builder.js';
+import { parseConversationTurns } from '../query/conversation-turns.js';
+import { fallbackChain } from '../generation/fallback-chain.js';
 import { createHttpError, isJsonObject, readJsonBody, sendJson } from '../http-exchange.js';
-import { gradeResponseWithJudge } from '../llm-judge.js';
-import { modelRouter } from '../model-router.js';
-import { promptCacheLedger } from '../prompt-cache.js';
-import { TRICKY_REWRITE_QUERIES } from '../query-rewriter.js';
-import { SupportResponseJsonSchema } from '../structured-output.js';
+import { gradeResponseWithJudge } from '../evals/llm-judge.js';
+import { modelRouter } from '../generation/model-router.js';
+import { promptCacheLedger } from '../generation/prompt-cache.js';
+import { TRICKY_REWRITE_QUERIES } from '../query/query-rewriter.js';
+import { SupportResponseJsonSchema } from '../generation/structured-output.js';
 import type { RouteContext } from './route-types.js';
 
 const DEFAULT_CONTEXT_SYSTEM_PROMPT = 'You are an evidence-grounded support assistant.';

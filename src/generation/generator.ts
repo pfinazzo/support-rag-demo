@@ -11,7 +11,7 @@ import {
   DATA_SEPARATION_RULE,
   naiveMatch,
   regexMatch,
-} from './prompt-guard.js';
+} from '../guard/prompt-guard.js';
 import { buildContext, assertContextFits, type ContextInput } from './context-builder.js';
 import {
   stablePrefix,
@@ -36,7 +36,7 @@ import {
   type SupportResponse,
 } from './structured-output.js';
 import { getLlmProvider, generateWithLocalClaude, streamLocalClaude } from './local-claude.js';
-import { sanitizeUntrustedData } from './prompt-guard.js';
+import { sanitizeUntrustedData } from '../guard/prompt-guard.js';
 
 /** Sends one named progress event, with its data, to the page. */
 export type InfraEmitter = ({ event, data }: { event: string; data: unknown }) => void;

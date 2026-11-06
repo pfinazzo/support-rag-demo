@@ -4,12 +4,12 @@
  * answer from memory only. A health check that called a vendor would report
  * "down" whenever the vendor was down, even though this server was fine.
  */
-import { buildChunkingTelemetry } from '../chunking-telemetry.js';
+import { buildChunkingTelemetry } from '../ingest/chunking-telemetry.js';
 import { HAS_ANTHROPIC_KEY, HAS_COHERE_KEY, HAS_OPENAI_KEY } from '../config.js';
 import { isMockAi } from '../env.js';
 import { sendJson } from '../http-exchange.js';
-import { getLlmProvider } from '../local-claude.js';
-import { resolveRerankerBackend } from '../reranker.js';
+import { getLlmProvider } from '../generation/local-claude.js';
+import { resolveRerankerBackend } from '../ranking/reranker.js';
 import { documentStore, isMockIndex, pineconeSettings, reindexer } from '../runtime.js';
 import type { RouteContext } from './route-types.js';
 

@@ -3,7 +3,7 @@
  * This file decides which roles a section gets and whether a caller may read
  * it. Without it, a billing user could be shown admin-only text.
  */
-import type { RolePreset } from './types.js';
+import type { RolePreset } from '../types.js';
 
 /**
  * Every role a section or a caller can hold.

@@ -12,19 +12,19 @@ import {
   IS_MOCK_LLM_FORCED,
   SHOULD_DEFAULT_TO_MOCK_EMBEDDINGS,
 } from './config.js';
-import { DocumentStore } from './doc-store.js';
+import { DocumentStore } from './ingest/doc-store.js';
 import { isMockAi } from './env.js';
-import { indexPathForMode, loadIndex } from './index-store.js';
+import { indexPathForMode, loadIndex } from './ingest/index-store.js';
 import {
   checkClaudeAuth,
   getLlmProvider,
   initLlmProvider,
   setLlmProvider,
-} from './local-claude.js';
-import { pineconeConfig } from './pinecone-store.js';
-import { PromptGuard } from './prompt-guard.js';
-import { IncrementalIndexer } from './reindexer.js';
-import { SemanticCache } from './semantic-cache.js';
+} from './generation/local-claude.js';
+import { pineconeConfig } from './retrieval/pinecone-store.js';
+import { PromptGuard } from './guard/prompt-guard.js';
+import { IncrementalIndexer } from './ingest/reindexer.js';
+import { SemanticCache } from './query/semantic-cache.js';
 
 /**
  * Switches embeddings to mock vectors when no OpenAI key is set. Changes `process.env`.

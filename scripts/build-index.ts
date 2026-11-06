@@ -12,15 +12,15 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadEnv } from '../src/env.js';
-import { loadAndChunkDocs } from '../src/chunker.js';
-import { embedMany, EMBEDDING_MODEL } from '../src/embeddings.js';
-import { saveIndex, indexPathForMode } from '../src/index-store.js';
+import { loadAndChunkDocs } from '../src/ingest/chunker.js';
+import { embedMany, EMBEDDING_MODEL } from '../src/retrieval/embeddings.js';
+import { saveIndex, indexPathForMode } from '../src/ingest/index-store.js';
 import {
   chunkToPineconeRecord,
   pineconeConfig,
   savePineconeMock,
   upsertChunksToPinecone,
-} from '../src/pinecone-store.js';
+} from '../src/retrieval/pinecone-store.js';
 import type { DocChunk } from '../src/types.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

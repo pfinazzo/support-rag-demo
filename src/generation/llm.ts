@@ -13,13 +13,13 @@
  * - mock: an answer built from the top retrieved passages, with no LLM.
  */
 import { getLlmProvider, generateWithLocalClaude, type LlmProvider } from './local-claude.js';
-import type { ChatHistoryTurn, RerankedItem } from './types.js';
+import type { ChatHistoryTurn, RerankedItem } from '../types.js';
 import {
   buildDataSeparation,
   naiveMatch,
   regexMatch,
   type DataSeparation,
-} from './prompt-guard.js';
+} from '../guard/prompt-guard.js';
 
 /** The Anthropic model used when ANTHROPIC_MODEL is not set. */
 export const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
