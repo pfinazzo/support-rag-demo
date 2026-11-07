@@ -1292,12 +1292,14 @@ dialog p {
 }
 
 /* Technical "how it is done" line under each stage's plain-English subheading. */
-.stage-how {
+.stage-how,
+.spotlight-heading > p.stage-how {
   max-width: 720px;
   margin: 8px auto 0;
   font-size: 12.5px;
   line-height: 1.55;
   color: var(--muted);
+  text-align: center;
 }
 .stage-how b {
   color: var(--ink);
